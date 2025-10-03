@@ -2,10 +2,19 @@ import { app, BrowserWindow } from "electron";
 // import path from "node:path";
 import started from "electron-squirrel-startup";
 import { setupWindows } from "./wins";
+import logManager from "./service/logService";
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
 	app.quit();
 }
+
+process.on("uncaughtException", (err) => {
+	logManager.error("Uncaught Exception:", err);
+});
+
+process.on("unhandledRejection", (reason, promise) => {
+	logManager.error("unhandledRejection:", reason, promise);
+});
 
 // const createWindow = () => {
 // 	// Create the browser window.
